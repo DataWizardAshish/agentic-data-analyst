@@ -21,6 +21,8 @@ An **end-to-end AI-powered ML product planning system** that transforms raw data
 
 ## 🎯 Use Cases
 
+| Who | Use Case | Value |
+|-----|----------|-------|
 | **Product Managers** | Generate ML feasibility assessments | Turn 2-week scoping into 10-minute analysis |
 | **Consultants** | Accelerate RFP responses | Standardized, professional deliverables |
 | **Data Scientists** | Get deployment roadmaps | Bridge gap from model to production |
@@ -51,6 +53,8 @@ graph LR
 
 ### **Component Breakdown**
 
+| Agent | Purpose | Inputs | Outputs |
+|-------|---------|--------|---------|
 | **Schema Agent** | Analyze data structure | Raw DataFrame | Column types, nulls, cardinality, business interpretations |
 | **Profile Agent** | Statistical profiling | DataFrame | Distributions, correlations, outliers, categorical insights |
 | **Quality Agent** | Data quality checks | DataFrame | Quality issues (critical/warnings), validation report |
@@ -232,7 +236,7 @@ pytest tests/test_schema_agent.py -v
    class MyNewAgent:
        def __init__(self):
            self.processor = dspy.ChainOfThought(MyNewAgentSignature)
-
+       
        def analyze(self, input_data):
            result = self.processor(input_field=input_data)
            return {'output': result.output_field}
@@ -241,10 +245,10 @@ pytest tests/test_schema_agent.py -v
 3. **Integrate in supervisor** (`agents/supervisor.py`):
    ```python
    from agents.my_new_agent import MyNewAgent
-
+   
    # In __init__
    self.my_new_agent = MyNewAgent()
-
+   
    # In analyze_dataset
    new_results = self.my_new_agent.analyze(previous_results)
    ```
@@ -377,6 +381,15 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 - **OpenAI**: GPT-4 API
 - **Databricks**: MLOps best practices inspiration
 
+---
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/your-org/agentic-data-analyst/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/agentic-data-analyst/discussions)
+- **Email**: support@yourorg.com
+
+---
 
 ## 🗺️ Roadmap
 
