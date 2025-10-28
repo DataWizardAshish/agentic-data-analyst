@@ -2,6 +2,7 @@
 DSPy Signatures - Programmatic Prompt Definitions
 Each signature defines input/output structure for LLM reasoning
 """
+
 import dspy
 
 
@@ -10,25 +11,23 @@ class SchemaInterpreter(dspy.Signature):
     Interprets pandas data type and infers business meaning of a column.
     Uses sample values and statistics to make informed inference.
     """
-    
+
     # Inputs (programmatically computed)
     column_name = dspy.InputField(desc="Name of the column")
-    pandas_dtype = dspy.InputField(desc="Pandas data type (e.g., int64, object, float64)")
+    pandas_dtype = dspy.InputField(
+        desc="Pandas data type (e.g., int64, object, float64)"
+    )
     null_count = dspy.InputField(desc="Number of null values")
     unique_count = dspy.InputField(desc="Number of unique values")
     total_count = dspy.InputField(desc="Total number of rows")
     sample_values = dspy.InputField(desc="List of 2 sample non-null values as string")
-    
+
     # Outputs (LLM reasoning)
     business_type = dspy.OutputField(
         desc="Business type: 'Identifier', 'Categorical', 'Numeric Metric', 'Date/Time', 'Text', or 'Boolean'"
     )
-    confidence = dspy.OutputField(
-        desc="Confidence level: 'high', 'medium', or 'low'"
-    )
-    reasoning = dspy.OutputField(
-        desc="One sentence explanation for the classification"
-    )
+    confidence = dspy.OutputField(desc="Confidence level: 'high', 'medium', or 'low'")
+    reasoning = dspy.OutputField(desc="One sentence explanation for the classification")
     recommendation = dspy.OutputField(
         desc="Brief recommendation: 'Keep', 'Review', or 'Consider dropping' with reason"
     )
@@ -39,12 +38,14 @@ class StatisticalInsightGenerator(dspy.Signature):
     Generate business insights from statistical summary of a column.
     Interprets patterns and provides actionable recommendations.
     """
-    
+
     # Inputs (programmatically computed)
     column_name = dspy.InputField(desc="Name of the column")
     column_type = dspy.InputField(desc="Type: 'numeric' or 'categorical'")
-    stats_dict = dspy.InputField(desc="Dictionary with statistics (mean/median/std for numeric, cardinality/top_values for categorical)")
-    
+    stats_dict = dspy.InputField(
+        desc="Dictionary with statistics (mean/median/std for numeric, cardinality/top_values for categorical)"
+    )
+
     # Outputs (LLM reasoning)
     insight = dspy.OutputField(
         desc="1 sentence business insight explaining what the statistics reveal"
@@ -62,15 +63,23 @@ class QualityRecommender(dspy.Signature):
     Recommend actions to fix data quality issues.
     Provides actionable code snippets and impact assessment.
     """
-    
-    issue_type = dspy.InputField(desc="Type: 'missing_values', 'duplicates', 'outliers', 'inconsistent_categories'")
+
+    issue_type = dspy.InputField(
+        desc="Type: 'missing_values', 'duplicates', 'outliers', 'inconsistent_categories'"
+    )
     column_name = dspy.InputField(desc="Affected column name")
-    issue_description = dspy.InputField(desc="Description of the quality issue with counts/percentages")
+    issue_description = dspy.InputField(
+        desc="Description of the quality issue with counts/percentages"
+    )
     sample_data = dspy.InputField(desc="Sample of affected data")
-    
-    recommended_action = dspy.OutputField(desc="Specific recommendation (e.g., 'Impute with median', 'Drop duplicates', 'Cap outliers')")
+
+    recommended_action = dspy.OutputField(
+        desc="Specific recommendation (e.g., 'Impute with median', 'Drop duplicates', 'Cap outliers')"
+    )
     python_code = dspy.OutputField(desc="Pandas code snippet to fix the issue")
-    impact_description = dspy.OutputField(desc="What will change after applying this fix")
+    impact_description = dspy.OutputField(
+        desc="What will change after applying this fix"
+    )
 
 
 class MLUseCaseDetector(dspy.Signature):
@@ -78,16 +87,26 @@ class MLUseCaseDetector(dspy.Signature):
     Detects suitable ML use case and target variable from dataset analysis.
     Provides reasoning and ML readiness assessment.
     """
-    
-    dataset_overview = dspy.InputField(desc="Dataset overview: row count, column count, column types summary")
-    key_columns = dspy.InputField(desc="List of important columns with their types and characteristics")
+
+    dataset_overview = dspy.InputField(
+        desc="Dataset overview: row count, column count, column types summary"
+    )
+    key_columns = dspy.InputField(
+        desc="List of important columns with their types and characteristics"
+    )
     quality_issues = dspy.InputField(desc="Summary of data quality problems found")
-    
-    detected_use_case = dspy.OutputField(desc="Primary ML use case: regression, classification, clustering, or time-series")
+
+    detected_use_case = dspy.OutputField(
+        desc="Primary ML use case: regression, classification, clustering, or time-series"
+    )
     target_variable = dspy.OutputField(desc="Recommended target column name")
-    target_reasoning = dspy.OutputField(desc="2-sentence explanation why this target makes sense")
+    target_reasoning = dspy.OutputField(
+        desc="2-sentence explanation why this target makes sense"
+    )
     suitability_score = dspy.OutputField(desc="ML readiness score 0-100")
-    alternative_use_case = dspy.OutputField(desc="Alternative ML approach if applicable")
+    alternative_use_case = dspy.OutputField(
+        desc="Alternative ML approach if applicable"
+    )
 
 
 class FeatureEngineeringPlanner(dspy.Signature):
@@ -95,51 +114,92 @@ class FeatureEngineeringPlanner(dspy.Signature):
     Generates feature engineering recommendations in markdown format.
     Provides column-by-column transformation strategy.
     """
-    
-    column_summary = dspy.InputField(desc="Key columns with types, cardinality, null%, patterns")
+
+    column_summary = dspy.InputField(
+        desc="Key columns with types, cardinality, null%, patterns"
+    )
     target_variable = dspy.InputField(desc="Selected target variable")
     ml_use_case = dspy.InputField(desc="Selected ML use case")
-    planning_instructions = dspy.InputField(desc="Use case-specific instructions for planning depth and focus areas")
-    
-    feature_plan = dspy.OutputField(desc="Markdown formatted feature engineering plan with transformations per column")
-    training_recommendations = dspy.OutputField(desc="Model suggestions, validation strategy, hyperparameter hints in 3-4 sentences")
-    mlflow_setup = dspy.OutputField(desc="MLflow experiment tracking recommendations in 2-3 sentences")
+    planning_instructions = dspy.InputField(
+        desc="Use case-specific instructions for planning depth and focus areas"
+    )
+
+    feature_plan = dspy.OutputField(
+        desc="Markdown formatted feature engineering plan with transformations per column"
+    )
+    training_recommendations = dspy.OutputField(
+        desc="Model suggestions, validation strategy, hyperparameter hints in 3-4 sentences"
+    )
+    mlflow_setup = dspy.OutputField(
+        desc="MLflow experiment tracking recommendations in 2-3 sentences"
+    )
+
 
 class DatabricksDeploymentPlanner(dspy.Signature):
     """
     Generates comprehensive MLOps deployment strategy covering technical, organizational, and operational aspects.
     Provides end-to-end roadmap from development to production.
     """
-    
+
     ml_use_case = dspy.InputField(desc="Detected ML use case and target variable")
     feature_plan = dspy.InputField(desc="Feature engineering strategy")
     training_plan = dspy.InputField(desc="Model training recommendations")
     data_summary = dspy.InputField(desc="Dataset schema and quality summary")
-    
+
     # Technical Infrastructure
-    databricks_setup = dspy.OutputField(desc="Unity Catalog structure, cluster configurations, MLflow experiment setup in markdown with ## headers")
-    serving_strategy = dspy.OutputField(desc="Model serving endpoint configuration, API design, versioning strategy, scaling considerations in markdown")
-    monitoring_plan = dspy.OutputField(desc="Data drift detection, model performance tracking, alerting setup, dashboard recommendations in markdown")
-    data_strategy = dspy.OutputField(desc="Data pipeline architecture, refresh frequency, retention policies, backup strategy in markdown")
-    
+    databricks_setup = dspy.OutputField(
+        desc="Unity Catalog structure, cluster configurations, MLflow experiment setup in markdown with ## headers"
+    )
+    serving_strategy = dspy.OutputField(
+        desc="Model serving endpoint configuration, API design, versioning strategy, scaling considerations in markdown"
+    )
+    monitoring_plan = dspy.OutputField(
+        desc="Data drift detection, model performance tracking, alerting setup, dashboard recommendations in markdown"
+    )
+    data_strategy = dspy.OutputField(
+        desc="Data pipeline architecture, refresh frequency, retention policies, backup strategy in markdown"
+    )
+
     # Team & Timeline
-    team_requirements = dspy.OutputField(desc="Required roles (data engineers, data scientists, MLOps, architect), FTE estimates, skill requirements, ramp-up timeline in markdown")
-    implementation_roadmap = dspy.OutputField(desc="Phase-wise timeline in weeks (POC: X weeks, Development: Y weeks, UAT: Z weeks, Production: W weeks) with key milestones and deliverables in markdown")
-    risk_mitigation = dspy.OutputField(desc="Technical risks, organizational dependencies, data quality risks, mitigation strategies with ownership in markdown")
-    
+    team_requirements = dspy.OutputField(
+        desc="Required roles (data engineers, data scientists, MLOps, architect), FTE estimates, skill requirements, ramp-up timeline in markdown"
+    )
+    implementation_roadmap = dspy.OutputField(
+        desc="Phase-wise timeline in weeks (POC: X weeks, Development: Y weeks, UAT: Z weeks, Production: W weeks) with key milestones and deliverables in markdown"
+    )
+    risk_mitigation = dspy.OutputField(
+        desc="Technical risks, organizational dependencies, data quality risks, mitigation strategies with ownership in markdown"
+    )
+
     # Governance & Business
-    cost_estimation = dspy.OutputField(desc="Databricks compute costs, storage costs, serving endpoint costs, monthly estimates, optimization strategies in markdown")
-    governance_framework = dspy.OutputField(desc="Unity Catalog permissions, model approval workflow, data access controls, compliance requirements (GDPR/SOC2) in markdown")
-    success_metrics = dspy.OutputField(desc="Business KPIs to track, model performance metrics, operational SLAs, reporting cadence in markdown")
-    business_impact = dspy.OutputField(desc="ROI estimation, business value drivers, efficiency gains, stakeholder communication plan in markdown")
-    
+    cost_estimation = dspy.OutputField(
+        desc="Databricks compute costs, storage costs, serving endpoint costs, monthly estimates, optimization strategies in markdown"
+    )
+    governance_framework = dspy.OutputField(
+        desc="Unity Catalog permissions, model approval workflow, data access controls, compliance requirements (GDPR/SOC2) in markdown"
+    )
+    success_metrics = dspy.OutputField(
+        desc="Business KPIs to track, model performance metrics, operational SLAs, reporting cadence in markdown"
+    )
+    business_impact = dspy.OutputField(
+        desc="ROI estimation, business value drivers, efficiency gains, stakeholder communication plan in markdown"
+    )
+
     # Operations & Quality
-    testing_framework = dspy.OutputField(desc="Unit testing strategy, integration tests, model validation tests, data quality tests, CI/CD pipeline in markdown")
-    operational_playbook = dspy.OutputField(desc="Incident response procedures, model degradation handling, data pipeline failure recovery, rollback strategy in markdown")
-    enablement_plan = dspy.OutputField(desc="Documentation requirements, training sessions for stakeholders, runbooks for operations, knowledge transfer checklist in markdown")
-    
+    testing_framework = dspy.OutputField(
+        desc="Unit testing strategy, integration tests, model validation tests, data quality tests, CI/CD pipeline in markdown"
+    )
+    operational_playbook = dspy.OutputField(
+        desc="Incident response procedures, model degradation handling, data pipeline failure recovery, rollback strategy in markdown"
+    )
+    enablement_plan = dspy.OutputField(
+        desc="Documentation requirements, training sessions for stakeholders, runbooks for operations, knowledge transfer checklist in markdown"
+    )
+
     # Future Vision
-    future_enhancements = dspy.OutputField(desc="Feature store adoption roadmap, A/B testing framework, AutoML integration, model marketplace strategy, advanced monitoring in markdown")
+    future_enhancements = dspy.OutputField(
+        desc="Feature store adoption roadmap, A/B testing framework, AutoML integration, model marketplace strategy, advanced monitoring in markdown"
+    )
 
 
 class BusinessCommunicationGenerator(dspy.Signature):
@@ -147,36 +207,62 @@ class BusinessCommunicationGenerator(dspy.Signature):
     Generates executive-ready business communication materials.
     Translates technical ML strategy into stakeholder-friendly formats.
     """
-    
-    ml_use_case = dspy.InputField(desc="ML use case, target variable, and readiness score")
-    deployment_summary = dspy.InputField(desc="Key highlights from deployment strategy: team size, timeline, costs")
-    technical_risks = dspy.InputField(desc="Summary of technical and organizational risks")
-    success_metrics = dspy.InputField(desc="Business KPIs and model performance metrics")
-    
-    executive_summary = dspy.OutputField(desc="1-page executive summary in plain English: problem, solution, value, investment, timeline. Use markdown headers and bullet points.")
-    risk_matrix = dspy.OutputField(desc="Risk prioritization matrix in markdown table format with Impact (High/Medium/Low) × Likelihood (High/Medium/Low) grid")
-    timeline_visual = dspy.OutputField(desc="Mermaid Gantt chart syntax for project timeline with phases: POC, Development, UAT, Production")
-    budget_justification = dspy.OutputField(desc="Cost breakdown with ROI projection in markdown: investment vs expected returns with payback period")
-    stakeholder_talking_points = dspy.OutputField(desc="Key messages for different audiences: executives, technical teams, finance, operations in markdown with ## headers")
+
+    ml_use_case = dspy.InputField(
+        desc="ML use case, target variable, and readiness score"
+    )
+    deployment_summary = dspy.InputField(
+        desc="Key highlights from deployment strategy: team size, timeline, costs"
+    )
+    technical_risks = dspy.InputField(
+        desc="Summary of technical and organizational risks"
+    )
+    success_metrics = dspy.InputField(
+        desc="Business KPIs and model performance metrics"
+    )
+
+    executive_summary = dspy.OutputField(
+        desc="1-page executive summary in plain English: problem, solution, value, investment, timeline. Use markdown headers and bullet points."
+    )
+    risk_matrix = dspy.OutputField(
+        desc="Risk prioritization matrix in markdown table format with Impact (High/Medium/Low) × Likelihood (High/Medium/Low) grid"
+    )
+    timeline_visual = dspy.OutputField(
+        desc="Mermaid Gantt chart syntax for project timeline with phases: POC, Development, UAT, Production"
+    )
+    budget_justification = dspy.OutputField(
+        desc="Cost breakdown with ROI projection in markdown: investment vs expected returns with payback period"
+    )
+    stakeholder_talking_points = dspy.OutputField(
+        desc="Key messages for different audiences: executives, technical teams, finance, operations in markdown with ## headers"
+    )
+
 
 class PRDGenerator(dspy.Signature):
     """
     Generates production-grade Product Requirements Document (PRD).
     Follows industry best practices for ML product specifications.
     """
-    
+
     ml_use_case = dspy.InputField(desc="ML use case, target variable, and suitability")
-    feature_engineering = dspy.InputField(desc="Feature engineering plan and training strategy")
-    deployment_strategy = dspy.InputField(desc="Technical infrastructure, team, timeline, and costs")
-    business_summary = dspy.InputField(desc="Executive summary, ROI, and stakeholder communication")
+    feature_engineering = dspy.InputField(
+        desc="Feature engineering plan and training strategy"
+    )
+    deployment_strategy = dspy.InputField(
+        desc="Technical infrastructure, team, timeline, and costs"
+    )
+    business_summary = dspy.InputField(
+        desc="Executive summary, ROI, and stakeholder communication"
+    )
     quality_issues = dspy.InputField(desc="Data quality summary and risks")
-    
-    prd_document = dspy.OutputField(desc="""Generate a comprehensive, production-ready PRD in markdown:
+
+    prd_document = dspy.OutputField(
+        desc="""Generate a comprehensive, production-ready PRD in markdown:
 
 # Product Requirements Document (PRD)
-**Project:** [Auto-generate from ML use case]  
-**Owner:** [Product Manager - TBD]  
-**Status:** Draft  
+**Project:** [Auto-generate from ML use case]
+**Owner:** [Product Manager - TBD]
+**Status:** Draft
 **Last Updated:** [Current date]
 
 ---
@@ -222,9 +308,9 @@ For each key persona (2-4):
 
 ### 5.1 User Stories (Prioritized)
 Format each as:
-**[Priority: P0/P1/P2] Story ID: Title**  
-**Epic:** [Group related stories]  
-**Effort:** [Story points]  
+**[Priority: P0/P1/P2] Story ID: Title**
+**Epic:** [Group related stories]
+**Effort:** [Story points]
 **Dependencies:** [Blocking stories/tickets]
 
 As a [specific role], I want to [action] so that [measurable outcome].
@@ -447,4 +533,5 @@ Auto-rollback if:
 7. Use markdown tables for metrics, risks, and roadmap
 8. Keep executive summary under 150 words
 9. Ensure all sections are actionable - no "TBD" without owner and deadline
-10. Format for readability: Headers, bullets, tables, code blocks where appropriate""")
+10. Format for readability: Headers, bullets, tables, code blocks where appropriate"""
+    )

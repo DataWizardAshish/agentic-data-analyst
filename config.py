@@ -1,7 +1,9 @@
 """
 Configuration file for Agentic Data Analyst
 """
+
 import os
+
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -21,4 +23,6 @@ OUTPUT_DIR = "output"
 
 # Validation
 if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY not found in environment variables. Create a .env file with OPENAI_API_KEY=your_key")
+    raise ValueError(
+        "OPENAI_API_KEY not found in environment variables. Create a .env file with OPENAI_API_KEY=your_key"
+    )
