@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtualenvs
+.venv/
+.uv/
+env/
+venv/
+ENV/
+
+# Pip / build
+pip-wheel-metadata/
+dist/
+build/
+
+# Editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Streamlit
+.streamlit/
+
+# Logs
+*.log
+
+# Secrets and env
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store

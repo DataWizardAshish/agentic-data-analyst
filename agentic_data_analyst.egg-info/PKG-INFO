@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: agentic-data-analyst
+Version: 0.1.0
+Summary: Agentic Data Analyst — Streamlit + DSPy project
+License: MIT
+Requires-Python: <3.12,>=3.11.13
+Description-Content-Type: text/markdown
+Requires-Dist: streamlit>=1.32.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: dspy-ai>=3.0.3
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: openai==2.3.0
+Requires-Dist: numpy==1.26.4
+Requires-Dist: pytest>=7.0.0
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+
+# Agentic Data Analyst
+
+## Overview
+Single-page Streamlit app that runs a sequence of DSPy agents (schema, profile, quality, ML advisor, deployment, business) and can generate a PRD.
+
+## Requirements
+- Python 3.11.13 (your project env created via `uv`)
+- `uv` manages the virtual environment (or use pip/venv)
+
+## Quick start (using `uv`)
+1. Ensure you activated the `uv` environment (or `python` from `uv`).
+2. Install dependencies:
+   ```bash
+   # If using uv
+   uv sync
+   # or fallback: pip install -r requirements.txt
+3. Copy .env.example to .env and add your OPENAI_API_KEY.
+4. Run the App :
+
+streamlit run app.py
+
+5. Developer targets (Makefile)
+
+make install — install dependencies
+
+make run — run Streamlit locally
+
+make test — run unit tests
+
+6. Tests
+Run
+pytest -q

@@ -1,0 +1,15 @@
+streamlit>=1.32.0
+pandas>=2.2.0
+dspy-ai>=3.0.3
+python-dotenv>=1.0.1
+openai==2.3.0
+numpy==1.26.4
+pytest>=7.0.0
+
+[dev]
+pre-commit
+black
+flake8
+mypy
+isort
+pytest

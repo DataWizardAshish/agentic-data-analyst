@@ -1,0 +1,6 @@
+streamlit==1.32.0
+dspy-ai==3.0.3
+pandas==2.2.0
+openai==2.3.0
+python-dotenv==1.0.1
+numpy==1.26.4

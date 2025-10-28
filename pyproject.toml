@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-data-analyst"
+version = "0.1.0"
+description = "Agentic Data Analyst — Streamlit + DSPy project"
+readme = "README.md"
+requires-python = ">=3.11.13,<3.12"
+license = { text = "MIT" }
+dependencies = [
+  "streamlit>=1.32.0",
+  "pandas>=2.2.0",
+  "dspy-ai>=3.0.3",              # adjust if you have a specific version
+  "python-dotenv>=1.0.1",
+  "openai==2.3.0",
+  "numpy==1.26.4",
+  "pytest>=7.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",
+  "black",
+  "flake8",
+  "mypy",
+  "isort",
+  "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
